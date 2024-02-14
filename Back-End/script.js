@@ -7,18 +7,18 @@ const Iconfirmarsenha = document.querySelector('.confirmarsenha')
 // Conexão com banco de dados para o cadastro
 
 function cadastrar (){
-        fetch("http://localhost:8080/cadastrar",
+        fetch('http://localhost:8080/usuarios',
         {
-            headers: {
+            headers: { 
                 'Accept': 'aplication/json',
-                'Content-Type': 'aplication/json'
+                'Content-Type': 'application/json'
             },
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({
                 nome: Inome.value,
                 email: Iemail.value,
                 senha: Isenha.value,
-                confirmasenha: Iconfirmarsenha.value
+                confirmarsenha: Iconfirmarsenha.value
             })
         })
         .then(function(res){ console.log(res) })
