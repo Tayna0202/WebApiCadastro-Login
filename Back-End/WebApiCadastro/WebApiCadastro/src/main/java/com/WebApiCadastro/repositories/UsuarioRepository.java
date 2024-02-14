@@ -1,7 +1,7 @@
 package com.WebApiCadastro.repositories;
 
 import com.WebApiCadastro.entities.Usuario;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 }
