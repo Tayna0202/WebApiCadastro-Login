@@ -2,13 +2,18 @@ package com.WebApiCadastro.controllers;
 
 import com.WebApiCadastro.entities.Usuario;
 import com.WebApiCadastro.services.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -25,11 +30,11 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioService.listarUsuario());
     }
     @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario){
         return ResponseEntity.status(201).body(usuarioService.criarUsuario(usuario));
     }
     @PutMapping
-    public ResponseEntity<Usuario> alterarUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> alterarUsuario(@Valid @RequestBody Usuario usuario){
         return ResponseEntity.status(200).body(usuarioService.alterarUsuario(usuario));
     }
     @DeleteMapping("/{id}")
@@ -37,13 +42,8 @@ public class UsuarioController {
         usuarioService.deletarUsuario(id);
         return ResponseEntity.status(204).build();
     }
-    @ResponseBody
-    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-    public String handleHttpMediaTypeNotAcceptableException() {
-        return "acceptable MIME type:" + MediaType.APPLICATION_JSON_VALUE;
-    }
     @PostMapping("/login")
-    public ResponseEntity<Usuario> validarSenha(@RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> validarSenha(@Valid @RequestBody Usuario usuario){
         Boolean valid = usuarioService.validarSenha(usuario);
         Boolean validConfirmarSenha = usuarioService.validarConfirmarSenha(usuario);
         if (!valid){
@@ -54,4 +54,22 @@ public class UsuarioController {
         }
         return ResponseEntity.status(200).build();
     }
+    @ResponseBody
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public String handleHttpMediaTypeNotAcceptableException() {
+        return "acceptable MIME type:" + MediaType.APPLICATION_JSON_VALUE;
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handlerValidationException(MethodArgumentNotValidException ex){
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
+
 }
