@@ -1,6 +1,8 @@
 package com.WebApiCadastro.controllers;
 
+import com.WebApiCadastro.dto.UsuarioDto;
 import com.WebApiCadastro.entities.Usuario;
+import com.WebApiCadastro.security.Token;
 import com.WebApiCadastro.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(value = "/usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     private UsuarioService usuarioService;
@@ -43,16 +45,12 @@ public class UsuarioController {
         return ResponseEntity.status(204).build();
     }
     @PostMapping("/login")
-    public ResponseEntity<Usuario> validarSenha(@Valid @RequestBody Usuario usuario){
-        Boolean valid = usuarioService.validarSenha(usuario);
-        Boolean validConfirmarSenha = usuarioService.validarConfirmarSenha(usuario);
-        if (!valid){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<Token> logar(@Valid @RequestBody UsuarioDto usuario){
+        Token token = usuarioService.gerarToken(usuario);
+        if (token != null){
+            return ResponseEntity.ok(token);
         }
-        if (!validConfirmarSenha){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(403).build();
     }
     @ResponseBody
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
