@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto Web Api Cadastro</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Front-End/style.css">
     <script src="/Back-End/script.js" defer></script>
 </head>
 <body>
@@ -15,11 +15,14 @@
         </div>
             <form action="">
                 <h1>Login</h1>
-                <input type="text" name="nome" placeholder="Digite o nome">
-                <input type="email" name="email" placeholder="Digite o e-mail">
-                <input type="password" name="senha" placeholder="Digite a senha">
-                <input type="password" name="confirmarsenha" placeholder="Confirme a senha">
-                <a href="www.google.com"><button>Logar</button></a>
+                <input type="text" class="nome" name="nome" placeholder="Digite o nome">
+                <input type="email" class="email" name="email" id="email" onchange="onChangeEmail()" placeholder="Digite o e-mail">
+                <div class="error" id="email-required-error">Email é obrigatório!</div>
+                <div class="error" id="email-invalid-error">Email é inválido!</div>
+                <input type="password" class="senha" name="senha" id="password" onchange="onChangePassword()" placeholder="Digite a senha">
+                <div class="error" id="password-required-error">Senha é obrigatória!</div>
+                <button type="button" id="login-button" disabled="true" onclick="login()">Logar</button>
+                <button type="button" id="recover-password-button" disabled="true" onclick="recuperar_senha()">Recuperar Senha</button>
             </form>
                 <!-- Icons para login usando Facebook e Google -->
                 <div class="box_redes">
@@ -32,9 +35,11 @@
                             <img src="/Front-End/img/google.png" alt="entrar com o Google">
                         </a>
                     </div>
-                    <a href="/Front-End/cadastro.html"><h2>Fazer cadastro</h2></a>
+                    <a href="/Front-End/Pages/cadastro.html"><h2>Fazer cadastro</h2></a>
                 </div>
+                <script src="/Front-End/script_validEmail.js"></script>
         <script src="/Front-End/script_dark.js"></script>
+        <script src="/Front-End/script_valid_login.js"></script>
     </div>
 </body>
 </html>

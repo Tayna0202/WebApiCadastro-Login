@@ -32,7 +32,6 @@ public class TokenUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION ))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
-
         return PREFIX + token;
     }
 
@@ -51,7 +50,6 @@ public class TokenUtil {
     public static Authentication validate(HttpServletRequest request){
         String token = request.getHeader(HEADER);
         token = token.replace(PREFIX, "");
-
         Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes())
                 .build()
                 .parseClaimsJws(token);

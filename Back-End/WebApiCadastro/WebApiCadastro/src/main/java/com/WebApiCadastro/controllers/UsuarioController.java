@@ -5,6 +5,8 @@ import com.WebApiCadastro.entities.Usuario;
 import com.WebApiCadastro.security.Token;
 import com.WebApiCadastro.services.UsuarioService;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> listaUsuarios () {
         return ResponseEntity.status(200).body(usuarioService.listarUsuario());
     }
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @PostMapping
     public ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario){
         return ResponseEntity.status(201).body(usuarioService.criarUsuario(usuario));

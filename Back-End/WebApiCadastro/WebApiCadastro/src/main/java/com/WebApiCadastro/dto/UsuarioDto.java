@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UsuarioDto {
+
     public UsuarioDto(String nome, String email, String senha, String confirmarsenha) {
         super();
         this.nome = nome;
